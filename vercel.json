@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "mediashield-ai",
   "builds": [
     { "src": "index.html", "use": "@vercel/static" }
   ],
