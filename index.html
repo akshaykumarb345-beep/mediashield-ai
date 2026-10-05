@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediaShield AI — Multimodal Deepfake & Synthetic Media Verifier</title>
+  <meta name="description" content="MediaShield AI helps you examine images, videos, and audio for signs of AI-generation or manipulation. Get a cautious, evidence-backed assessment with clear explanations." />
+  <meta name="keywords" content="deepfake detection, synthetic media, AI-generated image, media verification, fact-checking, forensics" />
+  <meta property="og:title" content="MediaShield AI" />
+  <meta property="og:description" content="Multimodal deepfake and synthetic media verifier" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ─── HEADER ─────────────────────────────────────────────── -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="logo-link" href="#" aria-label="MediaShield AI — Home">
+        <span class="logo-icon" aria-hidden="true">🛡️</span>
+        <span class="logo-text">Media<span class="accent">Shield</span> <span class="logo-ai">AI</span></span>
+      </a>
+      <nav class="header-nav" aria-label="Primary navigation">
+        <a href="#how-it-works" class="nav-link">How it works</a>
+        <a href="#limitations" class="nav-link">Limitations</a>
+        <a href="#privacy" class="nav-link">Privacy</a>
+      </nav>
+      <div class="header-badge" role="status" aria-label="Analysis processed locally">
+        <span class="badge-dot" aria-hidden="true"></span>
+        Local analysis
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── HERO ──────────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-badge" role="note">
+        <span class="badge-pill">Beta</span>
+        Media Inspection Workflow — Not a definitive deepfake detector
+      </div>
+      <h1 id="hero-heading" class="hero-title">
+        Examine media for<br />
+        <span class="gradient-text">synthetic signals</span>
+      </h1>
+      <p class="hero-desc">
+        Upload an image, video, or audio file. MediaShield AI inspects technical signals,
+        metadata, and forensic patterns — then delivers a <strong>cautious, evidence-backed
+        assessment</strong> with clear explanations of what was and wasn't checked.
+      </p>
+      <a href="#upload-section" class="btn btn-primary hero-cta">
+        Start analysing
+        <span class="btn-arrow" aria-hidden="true">↓</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── MAIN UPLOAD & ANALYSIS ────────────────────────────── -->
+  <main id="main-content" class="main-content" aria-label="Media analysis workspace">
+    <div class="container">
+
+      <!-- UPLOAD CARD -->
+      <section id="upload-section" class="card upload-card" aria-labelledby="upload-heading">
+        <div class="card-header">
+          <h2 id="upload-heading">Upload Media</h2>
+          <p class="card-subtitle">Images · Videos · Audio — all analysis runs locally in your browser</p>
+        </div>
+
+        <!-- SIZE LIMIT NOTICE -->
+        <div class="notice notice-info" role="note" aria-label="Upload size limit">
+          <span class="notice-icon" aria-hidden="true">ℹ️</span>
+          <div>
+            <strong>Size limit: 200 MB per file.</strong>
+            Larger files may be slow to analyse on low-powered devices. No files are sent to external servers.
+          </div>
+        </div>
+
+        <!-- DROP ZONE -->
+        <div
+          id="drop-zone"
+          class="drop-zone"
+          role="button"
+          tabindex="0"
+          aria-label="Drop zone — drag and drop a file here, or press Enter to browse"
+          aria-describedby="supported-formats"
+        >
+          <div class="drop-zone-icon" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 4L24 32M24 4L16 12M24 4L32 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 34V42H40V34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="drop-zone-title">Drag &amp; drop your file here</p>
+          <p class="drop-zone-sub">or <button type="button" id="browse-btn" class="link-btn">browse files</button></p>
+          <p id="supported-formats" class="drop-zone-formats">
+            Images: JPG, PNG, WEBP &nbsp;·&nbsp; Video: MP4, MOV, WEBM &nbsp;·&nbsp; Audio: MP3, WAV, M4A
+          </p>
+          <input
+            type="file"
+            id="file-input"
+            class="visually-hidden"
+            accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm,audio/mpeg,audio/wav,audio/mp4,audio/x-m4a,.m4a"
+            aria-hidden="true"
+          />
+        </div>
+
+        <!-- FILE PREVIEW PANEL (hidden until file selected) -->
+        <div id="file-preview-panel" class="file-preview-panel" hidden aria-label="Selected file details">
+          <div class="file-preview-inner">
+            <div id="media-preview-container" class="media-preview-container" aria-label="Media preview"></div>
+            <div class="file-meta-grid" id="file-meta-grid" aria-label="File metadata"></div>
+          </div>
+          <div class="processing-notice" id="processing-notice" role="note">
+            <span class="notice-icon" aria-hidden="true">🔒</span>
+            <div>
+              <strong>How this file will be processed:</strong> All analysis runs entirely in your browser using JavaScript APIs (Canvas, Web Audio, FileReader).
+              No data is uploaded to any server. The file is held in memory only during analysis and discarded when you clear it.
+            </div>
+          </div>
+          <div class="file-actions">
+            <button type="button" id="analyse-btn" class="btn btn-primary">
+              <span class="btn-icon" aria-hidden="true">🔍</span>
+              Start Analysis
+            </button>
+            <button type="button" id="clear-btn" class="btn btn-ghost">
+              <span class="btn-icon" aria-hidden="true">✕</span>
+              Remove file
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROGRESS PANEL (hidden until analysis starts) -->
+      <section id="progress-panel" class="card progress-panel" hidden aria-labelledby="progress-heading" aria-live="polite">
+        <h2 id="progress-heading" class="progress-title">Analysing…</h2>
+        <div id="progress-steps" class="progress-steps" role="list" aria-label="Analysis steps"></div>
+        <div class="progress-bar-wrap" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Overall progress" id="progress-bar-wrap">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <p id="progress-status" class="progress-status" aria-live="polite"></p>
+      </section>
+
+      <!-- RESULTS PANEL (hidden until analysis complete) -->
+      <section id="results-panel" class="results-panel" hidden aria-labelledby="results-heading">
+        <div class="results-header">
+          <h2 id="results-heading">Analysis Report</h2>
+          <div class="results-actions">
+            <button type="button" id="copy-report-btn" class="btn btn-ghost btn-sm">
+              <span aria-hidden="true">📋</span> Copy report
+            </button>
+            <button type="button" id="new-analysis-btn" class="btn btn-primary btn-sm">
+              <span aria-hidden="true">+</span> New analysis
+            </button>
+          </div>
+        </div>
+
+        <!-- VERDICT CARD -->
+        <div id="verdict-card" class="card verdict-card" aria-label="Verdict"></div>
+
+        <!-- SIGNALS GRID -->
+        <div id="signals-grid" class="signals-grid" aria-label="Analysis signals"></div>
+
+        <!-- METADATA TABLE -->
+        <details class="card details-card" id="metadata-details">
+          <summary>
+            <span class="details-icon" aria-hidden="true">📄</span>
+            File Metadata
+          </summary>
+          <div id="metadata-table-wrap" class="metadata-table-wrap"></div>
+        </details>
+
+        <!-- LIMITATIONS -->
+        <div class="card limitations-card" id="limitations" aria-labelledby="lim-heading">
+          <h3 id="lim-heading">
+            <span aria-hidden="true">⚠️</span> Important Limitations
+          </h3>
+          <ul class="limitations-list">
+            <li>Automated analysis can produce false positives and false negatives.</li>
+            <li>Results are based on technical signal inspection only — not validated ML model inference.</li>
+            <li>Compressed, resized, or re-encoded media may obscure or introduce signals.</li>
+            <li>Metadata can be stripped, forged, or absent — absence is not proof of manipulation.</li>
+            <li>This tool is a <em>first-pass inspection aid</em>, not a definitive authenticator.</li>
+            <li>Never rely solely on this tool for high-stakes decisions.</li>
+          </ul>
+        </div>
+
+        <!-- NEXT STEPS -->
+        <div class="card next-steps-card" aria-labelledby="next-heading">
+          <h3 id="next-heading">
+            <span aria-hidden="true">🧭</span> Recommended Next Steps
+          </h3>
+          <div class="next-steps-grid" id="next-steps-grid"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ─── HOW IT WORKS ───────────────────────────────────────── -->
+  <section id="how-it-works" class="info-section" aria-labelledby="hiw-heading">
+    <div class="container">
+      <h2 id="hiw-heading" class="section-title">How it works</h2>
+      <div class="hiw-grid">
+        <article class="hiw-card">
+          <div class="hiw-num" aria-hidden="true">01</div>
+          <h3>Upload &amp; Validate</h3>
+          <p>Your file is read locally. Format, size, and content type are checked before analysis begins.</p>
+        </article>
+        <article class="hiw-card">
+          <div class="hiw-num" aria-hidden="true">02</div>
+          <h3>Signal Inspection</h3>
+          <p>Depending on media type, the app inspects metadata, pixel statistics, frequency patterns, and consistency signals.</p>
+        </article>
+        <article class="hiw-card">
+          <div class="hiw-num" aria-hidden="true">03</div>
+          <h3>Cautious Assessment</h3>
+          <p>Results are presented with an uncertainty range. No media is declared definitively real or fake.</p>
+        </article>
+        <article class="hiw-card">
+          <div class="hiw-num" aria-hidden="true">04</div>
+          <h3>Guided Verification</h3>
+          <p>Actionable next steps help you decide when further human review or specialist tools are needed.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PRIVACY ────────────────────────────────────────────── -->
+  <section id="privacy" class="info-section privacy-section" aria-labelledby="priv-heading">
+    <div class="container">
+      <h2 id="priv-heading" class="section-title">Privacy &amp; Security</h2>
+      <div class="privacy-grid">
+        <div class="privacy-item">
+          <span class="privacy-icon" aria-hidden="true">🔒</span>
+          <h3>100% local processing</h3>
+          <p>All analysis happens in your browser. Your file never leaves your device.</p>
+        </div>
+        <div class="privacy-item">
+          <span class="privacy-icon" aria-hidden="true">🗑️</span>
+          <h3>Immediate deletion</h3>
+          <p>Files are held in memory only during analysis. Clearing or closing the tab removes all data.</p>
+        </div>
+        <div class="privacy-item">
+          <span class="privacy-icon" aria-hidden="true">🚫</span>
+          <h3>No third-party uploads</h3>
+          <p>Nothing is sent to external APIs or cloud services without your explicit consent.</p>
+        </div>
+        <div class="privacy-item">
+          <span class="privacy-icon" aria-hidden="true">🛡️</span>
+          <h3>Content validation</h3>
+          <p>File content is validated beyond the extension to reduce malformed-file risks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <p class="footer-logo">Media<span class="accent">Shield</span> <span class="logo-ai">AI</span></p>
+      <p class="footer-note">
+        This tool is an <strong>educational prototype</strong>.
+        Results are not definitive proof of authenticity or manipulation.
+        Always seek independent verification for high-stakes decisions.
+      </p>
+      <p class="footer-copy">Built for CIE Project 2026 · All analysis runs locally</p>
+    </div>
+  </footer>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" aria-hidden="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
